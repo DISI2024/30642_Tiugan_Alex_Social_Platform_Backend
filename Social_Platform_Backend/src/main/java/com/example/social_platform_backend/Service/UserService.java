@@ -27,7 +27,11 @@ public class UserService {
     public User postUser(User user){
         return userRepository.save(user);
     }
-
+    public User getUserByUsername(String username) {
+        if(userRepository.findUserByUsername(username).isPresent())
+            return userRepository.findUserByUsername(username).get();
+        else return null;
+    }
     public User putUser(User user){
         User oldUser = userRepository.findById(user.getId()).get();
         oldUser.setEmail(user.getEmail());
