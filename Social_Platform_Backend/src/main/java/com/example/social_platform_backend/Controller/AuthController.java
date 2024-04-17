@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
-    private final String testVariable;
+
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
