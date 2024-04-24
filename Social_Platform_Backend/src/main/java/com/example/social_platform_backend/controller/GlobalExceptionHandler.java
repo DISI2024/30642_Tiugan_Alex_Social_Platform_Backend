@@ -1,6 +1,5 @@
-package com.example.social_platform_backend.Controller;
+package com.example.social_platform_backend.controller;
 
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

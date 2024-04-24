@@ -1,25 +1,19 @@
-package com.example.social_platform_backend.Controller;
+package com.example.social_platform_backend.controller;
 
-import com.example.social_platform_backend.Exceptions.LoginException;
-import com.example.social_platform_backend.Exceptions.RegisterException;
-import com.example.social_platform_backend.Facade.LoginDto;
-import com.example.social_platform_backend.Facade.RegisterDto;
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Service.AuthenticationService;
-import com.example.social_platform_backend.Service.UserService;
+import com.example.social_platform_backend.exceptions.LoginException;
+import com.example.social_platform_backend.exceptions.RegisterException;
+import com.example.social_platform_backend.facade.LoginDto;
+import com.example.social_platform_backend.facade.RegisterDto;
+import com.example.social_platform_backend.service.AuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.naming.AuthenticationException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -30,7 +24,7 @@ public class AuthController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
         try {
             return ResponseEntity.ok(authenticationService.login(loginDto));
         }
@@ -40,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterDto registerDto) {
+    public ResponseEntity<Object> register(@Valid @RequestBody RegisterDto registerDto) {
         try {
             return ResponseEntity.ok(authenticationService.register(registerDto));
         }
@@ -49,6 +43,9 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+
+
 
 
 }

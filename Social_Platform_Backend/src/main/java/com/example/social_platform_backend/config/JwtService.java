@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Config;
+package com.example.social_platform_backend.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

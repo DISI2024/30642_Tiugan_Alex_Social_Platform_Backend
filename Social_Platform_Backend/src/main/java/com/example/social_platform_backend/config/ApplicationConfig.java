@@ -1,7 +1,7 @@
-package com.example.social_platform_backend.Config;
+package com.example.social_platform_backend.config;
 
-import com.example.social_platform_backend.Facade.Convertor.UserConvertor;
-import com.example.social_platform_backend.Repository.UserRepository;
+import com.example.social_platform_backend.facade.convertor.UserConvertor;
+import com.example.social_platform_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

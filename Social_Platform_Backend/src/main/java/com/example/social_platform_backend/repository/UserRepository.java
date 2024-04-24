@@ -1,6 +1,6 @@
-package com.example.social_platform_backend.Repository;
+package com.example.social_platform_backend.repository;
 
-import com.example.social_platform_backend.Facade.User;
+import com.example.social_platform_backend.facade.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

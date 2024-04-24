@@ -1,7 +1,7 @@
-package com.example.social_platform_backend.Service;
+package com.example.social_platform_backend.service;
 
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Repository.UserRepository;
+import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

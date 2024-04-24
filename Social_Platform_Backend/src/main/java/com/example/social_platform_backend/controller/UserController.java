@@ -1,8 +1,7 @@
-package com.example.social_platform_backend.Controller;
+package com.example.social_platform_backend.controller;
 
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Service.UserService;
-import jakarta.websocket.server.PathParam;
+import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

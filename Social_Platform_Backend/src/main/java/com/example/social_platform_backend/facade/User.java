@@ -1,9 +1,10 @@
-package com.example.social_platform_backend.Facade;
+package com.example.social_platform_backend.facade;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import utils.Util;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,17 +17,23 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="username", unique = true, nullable = false)
     private String username;
 
+    @Column(name="password", unique = true, nullable = false)
     private String password;
 
+    @Column(name="first_name", unique = false, nullable = false)
     private String firstname;
 
+    @Column(name="last_name", unique = false, nullable = false)
     private String lastname;
 
+    @Column(name="email", unique = true, nullable = false)
     private String email;
 
     //@Enumerated(EnumType.STRING)
+    @Column(name="role", unique = true, nullable = false)
     private String role;
 
     public User() {
@@ -54,8 +61,8 @@ public class User implements UserDetails {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Number id) {
+        this.id = Util.getLong(id);
     }
 
     public void setPassword(String password) {

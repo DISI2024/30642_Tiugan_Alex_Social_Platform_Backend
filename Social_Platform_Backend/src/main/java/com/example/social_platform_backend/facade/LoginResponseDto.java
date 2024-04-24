@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Facade;
+package com.example.social_platform_backend.facade;
 
 import lombok.Data;
 
