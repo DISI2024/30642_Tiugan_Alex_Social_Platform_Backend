@@ -19,6 +19,17 @@ public class RegisterDto {
     @Email(message = "Invalid email format")
     private String email;
 
+    public RegisterDto() {
+    }
+
+    public RegisterDto(String username, String password, String firstname, String lastname, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
     public String getUsername() {
         return username;
     }
