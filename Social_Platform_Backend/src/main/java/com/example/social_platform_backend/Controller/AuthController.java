@@ -5,6 +5,7 @@ import com.example.social_platform_backend.Facade.RegisterDto;
 import com.example.social_platform_backend.Facade.User;
 import com.example.social_platform_backend.Service.UserService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 @CrossOrigin("*")
 public class AuthController {
 
     private final UserService userService;
-
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Object> login(@Valid @RequestBody LoginDto loginDto) {
