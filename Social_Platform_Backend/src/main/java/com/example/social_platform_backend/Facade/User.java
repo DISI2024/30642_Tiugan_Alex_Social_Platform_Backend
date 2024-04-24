@@ -26,19 +26,28 @@ public class User implements UserDetails {
 
     private String email;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    //@Enumerated(EnumType.STRING)
+    private String role;
 
     public User() {
     }
 
-    public User(Long id, String username, String password, String firstname, String lastname, String email) {
+    public User(Long id, String username, String password, String firstname, String lastname, String email, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getId() {
@@ -113,6 +122,6 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(role));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.social_platform_backend.Config;
 
+import com.example.social_platform_backend.Facade.Convertor.UserConvertor;
 import com.example.social_platform_backend.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -41,4 +42,7 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public UserConvertor userConvertor(){ return new UserConvertor();}
 }
