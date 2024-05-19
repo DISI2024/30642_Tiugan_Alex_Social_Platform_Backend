@@ -42,6 +42,11 @@ public class UserService {
         return userRepository.save(oldUser);
     }
 
+    public User addFriend(User user, User friend) {
+        user.addFriend(friend);
+
+        return userRepository.save(user);
+    }
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
