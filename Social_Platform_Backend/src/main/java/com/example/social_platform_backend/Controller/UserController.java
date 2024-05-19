@@ -4,6 +4,8 @@ import com.example.social_platform_backend.Facade.User;
 import com.example.social_platform_backend.Service.UserService;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class UserController {
     public User postUser(@RequestBody User user){
         return userService.postUser(user);
     }
+
 
     @PutMapping("/user")
     public User putUser(@RequestBody User user){
