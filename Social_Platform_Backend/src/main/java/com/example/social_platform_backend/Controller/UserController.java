@@ -44,7 +44,6 @@ public class UserController {
     @PostMapping("/user/{username}/add-friend/{friend}")
     public ResponseEntity<Object> addFriend(@PathVariable String username, @PathVariable String friend) {
         try {
-            logger.info("add friend controller method");
             User user = userService.getUserByUsername(username);
             User friendEntity = userService.getUserByUsername(friend);
 
