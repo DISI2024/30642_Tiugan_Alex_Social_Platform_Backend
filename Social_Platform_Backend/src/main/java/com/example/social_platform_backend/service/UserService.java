@@ -24,6 +24,12 @@ public class UserService {
     public User getUserById(Long id){
         return userRepository.findById(id).get();
     }
+
+    public User getUserByEmail(String email) {
+        if(userRepository.findUserByEmail(email).isPresent())
+            return userRepository.findUserByUsername(email).get();
+        else return null;
+    }
     public User postUser(User user){
         return userRepository.save(user);
     }

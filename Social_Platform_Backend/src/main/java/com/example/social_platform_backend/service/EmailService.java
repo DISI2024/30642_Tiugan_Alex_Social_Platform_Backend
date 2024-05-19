@@ -12,6 +12,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -25,6 +27,19 @@ public class EmailService {
     public EmailService(JavaMailSender javaMailSender, ResetPasswordService resetPasswordService) {
         this.javaMailSender = javaMailSender;
         this.resetPasswordService = resetPasswordService;
+    }
+
+    public static String generateRandomString() {
+        final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        final int LENGTH = 6;
+        Random random = new SecureRandom();
+        StringBuilder stringBuilder = new StringBuilder(LENGTH);
+
+        for (int i = 0; i < LENGTH; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            stringBuilder.append(CHARACTERS.charAt(randomIndex));
+        }
+        return stringBuilder.toString();
     }
 
     //sends the reset password email for the respective recipient
@@ -54,12 +69,12 @@ public class EmailService {
 
             // Part two is attachment
             messageBodyPart = new MimeBodyPart();
-            UUID token = UUID.randomUUID(); //a random UUID token
-            resetPasswordService.saveInResetPasswordTable(user.getUsername(), token.toString());
+            String token = generateRandomString(); //a random token
+            resetPasswordService.saveInResetPasswordTable(user.getUsername(), token);
 
             String msg = "Dear " + user.getUsername() + ",<br><br>"
-                    + "We have received a request to reset your password. Please click the following link to reset your password:<br><br>"
-                    + "<a href=\"http://localhost:8080/resetpassword/token?token=" + token + "\">Reset Password</a>";
+                    + "We have received a request to reset your password. This is your code for resetting your password: <br><br>"
+                    + token + "\">Reset Password</a>";
 
             messageBodyPart.setContent(msg, "text/html; charset=utf-8");
             multipart.addBodyPart(messageBodyPart);

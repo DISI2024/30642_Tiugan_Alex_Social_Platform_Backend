@@ -5,34 +5,42 @@ import jakarta.validation.constraints.NotBlank;
 public class ResetPasswordDTO {
 
     @NotBlank
-    private String username;
+    private String email;
     @NotBlank
-    private String password;
+    private String otp;
     @NotBlank
-    private Integer smsToken;
+    private String newPassword;
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 
     @Override
     public String toString() {
         return "ResetPasswordDTO{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", smsToken=" + smsToken +
+                "email='" + email + '\'' +
+                ", otp='" + otp + '\'' +
+                ", newPassword='" + newPassword + '\'' +
                 '}';
     }
 }
