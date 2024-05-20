@@ -27,7 +27,7 @@ public class UserService {
 
     public User getUserByEmail(String email) {
         if(userRepository.findUserByEmail(email).isPresent())
-            return userRepository.findUserByUsername(email).get();
+            return userRepository.findUserByEmail(email).get();
         else return null;
     }
     public User postUser(User user){
