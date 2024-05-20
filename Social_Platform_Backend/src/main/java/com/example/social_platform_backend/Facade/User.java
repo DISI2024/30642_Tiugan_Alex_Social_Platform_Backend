@@ -1,5 +1,6 @@
 package com.example.social_platform_backend.Facade;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
+    @JsonManagedReference
     private Set<User> friends = new HashSet<>();
 
     public User() {

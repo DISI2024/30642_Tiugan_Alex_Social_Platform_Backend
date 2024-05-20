@@ -42,6 +42,17 @@ public class UserService {
         return userRepository.save(oldUser);
     }
 
+    public User addFriend(User user, User friend) {
+        user.addFriend(friend);
+
+        return userRepository.save(user);
+    }
+
+    public Set<User> getFriendsListByUsername(String username) {
+        if(userRepository.findUserByUsername(username).isPresent())
+            return userRepository.findUserByUsername(username).get().getFriends();
+        else return null;
+    }
     public User removeFriend(User user, User friend) {
         user.removeFriend(friend);
 
