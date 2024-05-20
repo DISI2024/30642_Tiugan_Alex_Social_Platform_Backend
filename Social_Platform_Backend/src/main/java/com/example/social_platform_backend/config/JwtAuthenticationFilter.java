@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Config;
+package com.example.social_platform_backend.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

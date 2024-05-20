@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Exceptions;
+package com.example.social_platform_backend.exceptions;
 
 public class RegisterException extends RuntimeException{
 

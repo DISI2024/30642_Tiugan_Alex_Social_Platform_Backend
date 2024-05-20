@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Config;
+package com.example.social_platform_backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,11 +1,11 @@
-package com.example.social_platform_backend.Service;
+package com.example.social_platform_backend.service;
 
-import com.example.social_platform_backend.Facade.Post;
-import com.example.social_platform_backend.Facade.PostCreateDTO;
-import com.example.social_platform_backend.Facade.PostUpdateDTO;
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Repository.PostRepository;
-import com.example.social_platform_backend.Repository.UserRepository;
+import com.example.social_platform_backend.facade.Post;
+import com.example.social_platform_backend.facade.PostCreateDTO;
+import com.example.social_platform_backend.facade.PostUpdateDTO;
+import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.repository.PostRepository;
+import com.example.social_platform_backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

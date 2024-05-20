@@ -1,7 +1,7 @@
-package com.example.social_platform_backend.Service;
+package com.example.social_platform_backend.service;
 
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Repository.UserRepository;
+import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +25,12 @@ public class UserService {
 
     public User getUserById(Long id){
         return userRepository.findById(id).get();
+    }
+
+    public User getUserByEmail(String email) {
+        if(userRepository.findUserByEmail(email).isPresent())
+            return userRepository.findUserByEmail(email).get();
+        else return null;
     }
     public User postUser(User user){
         return userRepository.save(user);

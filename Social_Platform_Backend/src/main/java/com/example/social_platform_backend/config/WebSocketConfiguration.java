@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Config;
+package com.example.social_platform_backend.config;
 
 import com.example.social_platform_backend.Handler.ChatWebSocketHandler;
 import org.springframework.context.annotation.Bean;

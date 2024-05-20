@@ -1,9 +1,9 @@
-package com.example.social_platform_backend.Facade.Convertor;
+package com.example.social_platform_backend.facade.convertor;
 
-import com.example.social_platform_backend.Facade.RegisterDto;
-import com.example.social_platform_backend.Facade.RegisterResponseDto;
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Facade.UserDTO;
+import com.example.social_platform_backend.facade.RegisterDto;
+import com.example.social_platform_backend.facade.RegisterResponseDto;
+import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.facade.UserDTO;
 
 public class UserConvertor {
 

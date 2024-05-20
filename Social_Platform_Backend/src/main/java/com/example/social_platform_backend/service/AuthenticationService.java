@@ -1,20 +1,16 @@
-package com.example.social_platform_backend.Service;
+package com.example.social_platform_backend.service;
 
-import com.example.social_platform_backend.Config.JwtService;
-import com.example.social_platform_backend.Exceptions.LoginException;
-import com.example.social_platform_backend.Exceptions.RegisterException;
-import com.example.social_platform_backend.Facade.*;
-import com.example.social_platform_backend.Facade.Convertor.UserConvertor;
-import com.example.social_platform_backend.Repository.UserRepository;
+import com.example.social_platform_backend.config.JwtService;
+import com.example.social_platform_backend.exceptions.LoginException;
+import com.example.social_platform_backend.exceptions.RegisterException;
+import com.example.social_platform_backend.facade.*;
+import com.example.social_platform_backend.facade.convertor.UserConvertor;
+import com.example.social_platform_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.naming.AuthenticationException;
 
 @Service
 @RequiredArgsConstructor

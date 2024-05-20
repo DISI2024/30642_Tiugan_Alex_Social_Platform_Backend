@@ -1,10 +1,15 @@
-package com.example.social_platform_backend.Controller;
+package com.example.social_platform_backend.controller;
 
-import com.example.social_platform_backend.Facade.Convertor.UserConvertor;
-import com.example.social_platform_backend.Facade.User;
-import com.example.social_platform_backend.Facade.UserDTO;
-import com.example.social_platform_backend.Service.UserService;
+import com.example.social_platform_backend.facade.UserDTO;
+import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import jakarta.websocket.server.PathParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.example.social_platform_backend.facade.ResetPasswordDTO;
+import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.service.EmailService;
+import com.example.social_platform_backend.service.ResetPasswordService;
+import com.example.social_platform_backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
