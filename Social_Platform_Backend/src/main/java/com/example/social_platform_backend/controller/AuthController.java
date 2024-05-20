@@ -70,7 +70,7 @@ public class AuthController {
             if(user == null)
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
 
-            emailService.sendResetPasswordEmail(user, "mihaligabriel75@gmail.com");
+            emailService.sendResetPasswordEmail(user, user.getEmail());
 
             return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"Email sent succesfully\"}");
         }

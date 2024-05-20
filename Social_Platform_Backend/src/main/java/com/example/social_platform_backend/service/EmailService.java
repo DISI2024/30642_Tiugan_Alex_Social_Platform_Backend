@@ -40,7 +40,7 @@ public class EmailService {
     public void sendResetPasswordEmail(User user, String receiverEmail) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
 
-        message.setFrom(new InternetAddress("mailtrap@demomailtrap.com"));
+        message.setFrom(new InternetAddress("socialplatform@noreply.com"));
         message.setRecipients(MimeMessage.RecipientType.TO, receiverEmail);
         message.setSubject("Reset your password");
 
