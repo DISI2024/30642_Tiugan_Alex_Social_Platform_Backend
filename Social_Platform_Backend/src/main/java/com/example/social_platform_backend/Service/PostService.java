@@ -3,56 +3,70 @@ package com.example.social_platform_backend.Service;
 import com.example.social_platform_backend.Facade.Post;
 import com.example.social_platform_backend.Facade.PostCreateDTO;
 import com.example.social_platform_backend.Facade.PostUpdateDTO;
+import com.example.social_platform_backend.Facade.User;
 import com.example.social_platform_backend.Repository.PostRepository;
+import com.example.social_platform_backend.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public List<Post> getPosts() {
+    public List<Post> getFeed(Long userId) {
+        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Set<User> friends = currentUser.getFriends();
         List<Post> allPosts = postRepository.findAll();
+
         return allPosts.stream()
-                .filter(post -> !post.isBlocked())
+                .filter(post -> friends.contains(post.getUser()) && !post.isBlocked())
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .collect(Collectors.toList());
     }
 
-    public Post postPost(PostCreateDTO postCreateDTO){
-        Post savePost = new Post(
-                0L,
-                postCreateDTO.getUsername(),
-                postCreateDTO.getPhotoURL(),
-                postCreateDTO.getDescription(),
-                false,
-                LocalDateTime.now()
-        );
+    public Post addPost(PostCreateDTO postCreateDTO) {
+        User user = userRepository.findById(postCreateDTO.getUserID()).orElseThrow(() -> new RuntimeException("User not found"));
 
-        return postRepository.save(savePost);
+        Post post = new Post();
+        post.setPhotoURL(postCreateDTO.getPhotoURL());
+        post.setDescription(postCreateDTO.getDescription());
+        post.setBlocked(false);
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUser(user);
+
+        user.addPost(post);
+
+        return postRepository.save(post);
     }
-    public List<Post> getUsersPosts(String username) {
-        List<Post> allPosts = postRepository.findAll();
-        return allPosts.stream()
-                .filter(post -> post.getUsername().equals(username))
+    public List<Post> getPostsByUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<Post> usersPosts = postRepository.findByUser(user);
+        return usersPosts.stream()
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .collect(Collectors.toList());
     }
 
-    public Post putPost(PostUpdateDTO postDTO){
-        Post currentPost = postRepository.findById(postDTO.getId()).get();
-        currentPost.setDescription(postDTO.getDescription());
-        currentPost.setPhotoURL(postDTO.getPhotoURL());
-        return postRepository.save(currentPost);
+    public Post updatePost(PostUpdateDTO updateDTO) {
+        Post post = postRepository.findById(updateDTO.getId()).orElseThrow(() -> new RuntimeException("Post not found"));
+
+        post.setPhotoURL(updateDTO.getPhotoURL());
+        post.setDescription(updateDTO.getDescription());
+        post.setBlocked(updateDTO.isBlocked());
+
+        return postRepository.save(post);
     }
 
-    public void deletePost(Long postID){
-        postRepository.deleteById(postID);
+    public void deletePost(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        post.getUser().removePost(post);
+        postRepository.delete(post);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.social_platform_backend.Facade;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,7 +9,11 @@ import lombok.Data;
 public class PostUpdateDTO {
 
     private Long id;
+
+    @Size(max = 1000, message = "Description must not exceed 1000 characters")
     private String description;
 
     private String photoURL;
+
+    private boolean blocked;
 }

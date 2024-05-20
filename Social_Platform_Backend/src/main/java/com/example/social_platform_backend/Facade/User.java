@@ -1,5 +1,6 @@
 package com.example.social_platform_backend.Facade;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -40,8 +41,12 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    @JsonManagedReference
+    @JsonIgnore
     private Set<User> friends = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Post> posts = new HashSet<>();
 
     public User() {
     }
@@ -100,6 +105,18 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public Set<User> getFriends() {
+        return friends;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -143,6 +160,13 @@ public class User implements UserDetails {
         this.friends = friends;
     }
 
+    public void addPost(Post post) {
+        posts.add(post);
+    }
+
+    public void removePost(Post post) {
+        posts.remove(post);
+    }
     public void addFriend(User friend) {
         friends.add(friend);
         friend.getFriends().add(this);
