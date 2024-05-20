@@ -79,6 +79,31 @@ public class UserController {
         userService.deleteUser(id);
     }
 
+    @DeleteMapping("/user/{username}/add-friend/{friend}")
+    public ResponseEntity<Object> removeFriend(@PathVariable String username, @PathVariable String friend) {
+        try {
+            User user = userService.getUserByUsername(username);
+            User friendEntity = userService.getUserByUsername(friend);
+
+            if(user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            if(friend == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friend not found");
+            }
+
+            userService.removeFriend(user, friendEntity);
+
+            return ResponseEntity.status(HttpStatus.OK).body("Friend removed succesfully");
+
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+        }
+    }
+
     @GetMapping("/user/friends/{username}")
     public ResponseEntity<Object> getUserFriendList(@PathVariable String username) {
         try {
