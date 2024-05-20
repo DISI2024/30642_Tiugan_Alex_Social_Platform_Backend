@@ -1,12 +1,15 @@
 package com.example.social_platform_backend.Facade;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
@@ -28,6 +31,15 @@ public class User implements UserDetails {
 
     //@Enumerated(EnumType.STRING)
     private String role;
+
+    @Getter
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+    private Set<User> friends = new HashSet<>();
 
     public User() {
     }
@@ -124,4 +136,19 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
     }
+
+    public void setFriends(Set<User> friends) {
+        this.friends = friends;
+    }
+
+    public void addFriend(User friend) {
+        friends.add(friend);
+        friend.getFriends().add(this);
+    }
+
+    public void removeFriend(User friend) {
+        friends.remove(friend);
+        friend.getFriends().remove(this);
+    }
+
 }
