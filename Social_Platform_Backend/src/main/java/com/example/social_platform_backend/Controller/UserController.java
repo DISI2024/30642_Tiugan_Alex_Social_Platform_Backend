@@ -1,6 +1,8 @@
 package com.example.social_platform_backend.Controller;
 
+import com.example.social_platform_backend.Facade.Convertor.UserConvertor;
 import com.example.social_platform_backend.Facade.User;
+import com.example.social_platform_backend.Facade.UserDTO;
 import com.example.social_platform_backend.Service.UserService;
 import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
@@ -10,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -73,5 +77,26 @@ public class UserController {
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
+    }
+
+    @GetMapping("/user/friends/{username}")
+    public ResponseEntity<Object> getUserFriendList(@PathVariable String username) {
+        try {
+            Set<User> friendsList = userService.getFriendsListByUsername(username);
+            List<UserDTO> friendsListDTO = friendsList.stream()
+                                                    .map(UserConvertor::toUserDTO)
+                                                    .collect(Collectors.toList());
+
+            if(friendsList == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            return ResponseEntity.status(HttpStatus.OK).body(friendsListDTO);
+
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
+        }
     }
 }
