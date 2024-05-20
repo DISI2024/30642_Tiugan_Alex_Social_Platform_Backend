@@ -26,4 +26,17 @@ public class UserConvertor {
         );
         return registerResponseDto;
     }
+
+    public static UserDTO toUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setUsername(user.getUsername());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstname(user.getFirstname());
+        userDTO.setLastname(user.getLastname());
+        userDTO.setRole(user.getRole());
+
+        return userDTO;
+    }
 }
