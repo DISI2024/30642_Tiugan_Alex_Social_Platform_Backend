@@ -2,6 +2,7 @@ package com.example.social_platform_backend.service;
 
 import com.example.social_platform_backend.facade.ResetPassword;
 import com.example.social_platform_backend.repository.ResetPasswordRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class ResetPasswordService {
         return resetPasswordRepository.findUsernameByToken(token);
     }
 
-    //deletes the record from the table after resetting the password, because the token is not longer available
+    //deletes the record from the table after resetting the password, because the token is no longer available
+    @Transactional
     public void deleteResetPasswordByUsername(String username) {
         resetPasswordRepository.deleteByUsername(username);
     }
