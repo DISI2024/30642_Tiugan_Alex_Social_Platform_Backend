@@ -1,6 +1,6 @@
 package com.example.social_platform_backend.config;
 
-import com.example.social_platform_backend.Handler.ChatWebSocketHandler;
+import com.example.social_platform_backend.handler.ChatWebSocketHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -1,4 +1,4 @@
-package com.example.social_platform_backend.Handler;
+package com.example.social_platform_backend.handler;
 
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
