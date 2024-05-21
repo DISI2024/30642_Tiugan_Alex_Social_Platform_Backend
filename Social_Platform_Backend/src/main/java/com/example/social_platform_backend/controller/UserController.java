@@ -1,5 +1,6 @@
 package com.example.social_platform_backend.controller;
 
+import com.example.social_platform_backend.facade.PostDTO;
 import com.example.social_platform_backend.facade.User;
 import com.example.social_platform_backend.facade.UserDTO;
 import com.example.social_platform_backend.facade.convertor.UserConvertor;
@@ -24,7 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 @CrossOrigin("*")
 public class UserController {
 
@@ -36,27 +37,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public List<User> getUsers() {
-        return userService.getUsers();
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> feed = userService.getAllUsers();
+        return ResponseEntity.ok(feed);
     }
 
-    @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public UserDTO getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/user/username/{username}")
+    @GetMapping("/username/{username}")
     public User getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
     }
 
-    @PostMapping("/user")
-    public User postUser(@RequestBody UserDTO userDTO) {
+    @PostMapping("")
+    public UserDTO postUser(@RequestBody UserDTO userDTO) {
         return userService.postUser(userDTO);
     }
 
-    @PostMapping("/user/{username}/add-friend/{friend}")
+    @PostMapping("/{username}/add-friend/{friend}")
     public ResponseEntity<Object> addFriend(@PathVariable String username, @PathVariable String friend) {
         try {
             User user = userService.getUserByUsername(username);
@@ -79,17 +81,17 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user")
-    public User putUser(@RequestBody UserDTO userDTO) {
+    @PutMapping("")
+    public UserDTO putUser(@RequestBody UserDTO userDTO) {
         return userService.putUser(userDTO);
     }
 
-    @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("{username}")
+    public void deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
     }
 
-    @DeleteMapping("/user/{username}/add-friend/{friend}")
+    @DeleteMapping("/{username}/add-friend/{friend}")
     public ResponseEntity<Object> removeFriend(@PathVariable String username, @PathVariable String friend) {
         try {
             User user = userService.getUserByUsername(username);
@@ -112,7 +114,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/friends/{username}")
+    @GetMapping("/friends/{username}")
     public ResponseEntity<Object> getUserFriendList(@PathVariable String username) {
         try {
             Set<User> friendsList = userService.getFriendsListByUsername(username);
@@ -131,7 +133,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user/suggested-friends/{username}")
+    @GetMapping("/suggested-friends/{username}")
     public ResponseEntity<?> getSuggestedFriends(@PathVariable String username) {
         List<UserDTO> suggestedFriends = userService.getSuggestedFriends(username);
         return ResponseEntity.ok(suggestedFriends);

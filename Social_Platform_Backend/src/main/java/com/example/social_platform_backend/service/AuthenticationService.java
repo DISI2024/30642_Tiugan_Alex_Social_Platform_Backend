@@ -53,13 +53,14 @@ public class AuthenticationService {
 
         try {
             User user = userRepository.findUserByUsername(loginDto.getUsername()).get();
+            UserDTO userDTO = userConvertor.toUserDTO(userRepository.findUserByUsername(loginDto.getUsername()).get());
             if (user == null)
                 throw new LoginException("User " + loginDto.getUsername() + " not found!");
 
             var jwtToken = jwtService.generateToken(user);
             return new LoginResponseDto(
                     jwtToken,
-                    user
+                    userDTO
             );
         }
         catch(LoginException e) {

@@ -1,5 +1,6 @@
 package com.example.social_platform_backend.config;
 
+import com.example.social_platform_backend.facade.convertor.PostConvertor;
 import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +46,7 @@ public class ApplicationConfig {
 
     @Bean
     public UserConvertor userConvertor(){ return new UserConvertor();}
+
+    @Bean
+    public PostConvertor postConvertor(){ return new PostConvertor();}
 }

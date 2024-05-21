@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class LoginResponseDto {
     private String jwt;
-    private User user;
+    private UserDTO user;
 
-    public LoginResponseDto(String jwtToken, User user) {
+    public LoginResponseDto(String jwtToken, UserDTO userDTO) {
         this.jwt = jwtToken;
-        this.user = user;
+        this.user = userDTO;
     }
 }

@@ -1,12 +1,13 @@
 package com.example.social_platform_backend.service;
 
-import com.example.social_platform_backend.facade.Post;
-import com.example.social_platform_backend.facade.PostCreateDTO;
-import com.example.social_platform_backend.facade.PostUpdateDTO;
-import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.facade.*;
+import com.example.social_platform_backend.facade.convertor.PostConvertor;
+import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.repository.PostRepository;
 import com.example.social_platform_backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostConvertor postConvertor;
 
     public List<Post> getFeed(Long userId) {
         User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -30,6 +32,26 @@ public class PostService {
                 .filter(post -> friends.contains(post.getUser()) && !post.isBlocked())
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public List<PostDTO> getAllPosts(){
+        List<Post> allPosts = postRepository.findAll();
+
+        return allPosts.stream()
+                .map(post -> postConvertor.toPostDTO(post))
+                .collect(Collectors.toList());
+    }
+
+    public void blockPost(Long id){
+        Post post = postRepository.findById(id).get();
+        post.setBlocked(true);
+        postRepository.save(post);
+    }
+
+    public void unblockPost(Long id){
+        Post post = postRepository.findById(id).get();
+        post.setBlocked(false);
+        postRepository.save(post);
     }
 
     public Post addPost(PostCreateDTO postCreateDTO) {

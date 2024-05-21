@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @Column(name="username", unique = true, nullable = false)
     private String username;
 
-    @Column(name="password", unique = true, nullable = false)
+    @Column(name="password", nullable = false)
     private String password;
 
     @Column(name="first_name", unique = false, nullable = false)
@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private String email;
 
     //@Enumerated(EnumType.STRING)
-    @Column(name="role", unique = true, nullable = false)
+    @Column(name="role", nullable = false)
     private String role;
 
     private String photoUrl;
@@ -178,8 +178,10 @@ public class User implements UserDetails {
     }
 
     public void removeFriend(User friend) {
-        friends.remove(friend);
-        friend.getFriends().remove(this);
+        if (friends.contains(friend)) {
+            friends.remove(friend);
+            friend.getFriends().remove(this);
+        }
     }
 
 }

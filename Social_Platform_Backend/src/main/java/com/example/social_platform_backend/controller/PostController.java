@@ -2,6 +2,7 @@ package com.example.social_platform_backend.controller;
 
 import com.example.social_platform_backend.facade.Post;
 import com.example.social_platform_backend.facade.PostCreateDTO;
+import com.example.social_platform_backend.facade.PostDTO;
 import com.example.social_platform_backend.facade.PostUpdateDTO;
 import com.example.social_platform_backend.service.PostService;
 import lombok.AllArgsConstructor;
@@ -25,10 +26,28 @@ public class PostController {
         return ResponseEntity.ok(feed);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<PostDTO>> getAllPosts() {
+        List<PostDTO> feed = postService.getAllPosts();
+        return ResponseEntity.ok(feed);
+    }
+
     @PostMapping()
     public ResponseEntity<Post> addPost(@RequestBody PostCreateDTO postCreateDTO) {
         Post newPost = postService.addPost(postCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
+    }
+
+    @PostMapping("/block/{id}")
+    public ResponseEntity<?> blockPost(@PathVariable Long id) {
+        postService.blockPost(id);
+        return ResponseEntity.ok("Post blocked successfully");
+    }
+
+    @PostMapping("/unblock/{id}")
+    public ResponseEntity<?> unblockPost(@PathVariable Long id) {
+        postService.unblockPost(id);
+        return ResponseEntity.ok("Post unblocked successfully");
     }
 
     @GetMapping("/id/{postId}")
