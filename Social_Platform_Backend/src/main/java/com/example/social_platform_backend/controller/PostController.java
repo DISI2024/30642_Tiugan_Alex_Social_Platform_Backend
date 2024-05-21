@@ -31,6 +31,12 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Post>> getPosts() {
+        List<Post> posts = postService.getPosts();
+        return ResponseEntity.ok(posts);
+    }
+
     @GetMapping("/id/{postId}")
     public ResponseEntity<Post> getPostsById(@PathVariable Long postId) {
         return ResponseEntity.ok(postService.getPostById(postId));
