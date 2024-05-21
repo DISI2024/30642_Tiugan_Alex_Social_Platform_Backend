@@ -1,12 +1,12 @@
-package com.example.social_platform_backend.controller;
+package com.example.social_platform_backend.Controller;
 
-import com.example.social_platform_backend.exceptions.LoginException;
-import com.example.social_platform_backend.exceptions.RegisterException;
-import com.example.social_platform_backend.facade.LoginDto;
-import com.example.social_platform_backend.facade.RegisterDto;
-import com.example.social_platform_backend.facade.User;
-import com.example.social_platform_backend.service.AuthenticationService;
-import com.example.social_platform_backend.service.UserService;
+import com.example.social_platform_backend.Exceptions.LoginException;
+import com.example.social_platform_backend.Exceptions.RegisterException;
+import com.example.social_platform_backend.Facade.LoginDto;
+import com.example.social_platform_backend.Facade.RegisterDto;
+import com.example.social_platform_backend.Facade.User;
+import com.example.social_platform_backend.Service.AuthenticationService;
+import com.example.social_platform_backend.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

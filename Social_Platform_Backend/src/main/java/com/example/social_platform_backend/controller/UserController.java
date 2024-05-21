@@ -129,4 +129,10 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Server error");
         }
     }
+
+    @GetMapping("/user/suggested-friends/{username}")
+    public ResponseEntity<List<User>> getSuggestedFriends(@PathVariable String username) {
+        List<User> suggestedFriends = userService.getSuggestedFriends(username);
+        return ResponseEntity.ok(suggestedFriends);
+    }
 }
