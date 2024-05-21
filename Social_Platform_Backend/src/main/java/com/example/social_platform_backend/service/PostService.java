@@ -42,8 +42,6 @@ public class PostService {
         post.setCreatedAt(LocalDateTime.now());
         post.setUser(user);
 
-        user.addPost(post);
-
         return postRepository.save(post);
     }
     public List<Post> getPostsByUser(Long userId) {
@@ -66,7 +64,7 @@ public class PostService {
 
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
-        post.getUser().removePost(post);
+
         postRepository.delete(post);
     }
 }
