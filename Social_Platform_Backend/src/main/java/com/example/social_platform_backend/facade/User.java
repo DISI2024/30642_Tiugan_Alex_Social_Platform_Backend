@@ -1,6 +1,5 @@
 package com.example.social_platform_backend.facade;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -41,6 +40,8 @@ public class User implements UserDetails {
     @Column(name="role", unique = true, nullable = false)
     private String role;
 
+    private String photoUrl;
+
     @Getter
     @ManyToMany
     @JoinTable(
@@ -48,12 +49,8 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
-    @JsonIgnore
+    @JsonManagedReference
     private Set<User> friends = new HashSet<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Post> posts = new HashSet<>();
 
     public User() {
     }
@@ -66,6 +63,16 @@ public class User implements UserDetails {
         this.lastname = lastname;
         this.email = email;
         this.role = role;
+    }
+
+    public User(String username, String password, String firstname, String lastname, String email, String role, String photoUrl) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.role = role;
+        this.photoUrl = photoUrl;
     }
 
     public String getRole() {
@@ -112,16 +119,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Set<User> getFriends() {
-        return friends;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     @Override
@@ -167,13 +170,6 @@ public class User implements UserDetails {
         this.friends = friends;
     }
 
-    public void addPost(Post post) {
-        posts.add(post);
-    }
-
-    public void removePost(Post post) {
-        posts.remove(post);
-    }
     public void addFriend(User friend) {
         friends.add(friend);
         friend.getFriends().add(this);

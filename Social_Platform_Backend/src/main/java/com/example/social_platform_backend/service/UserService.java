@@ -1,6 +1,8 @@
 package com.example.social_platform_backend.service;
 
 import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.facade.UserDTO;
+import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,8 @@ public class UserService {
             return userRepository.findUserByEmail(email).get();
         else return null;
     }
-    public User postUser(User user){
+    public User postUser(UserDTO userDTO){
+        User user = UserConvertor.toUser(userDTO);
         return userRepository.save(user);
     }
     public User getUserByUsername(String username) {
@@ -40,12 +43,14 @@ public class UserService {
             return userRepository.findUserByUsername(username).get();
         else return null;
     }
-    public User putUser(User user){
-        User oldUser = userRepository.findById(user.getId()).get();
-        oldUser.setEmail(user.getEmail());
-        oldUser.setFirstname(user.getFirstname());
-        oldUser.setLastname(user.getLastname());
-        oldUser.setUsername(user.getUsername());
+    public User putUser(UserDTO userDTO){
+
+        User oldUser = userRepository.findUserByUsername(userDTO.getUsername()).get();
+        oldUser.setEmail(userDTO.getEmail());
+        oldUser.setFirstname(userDTO.getFirstname());
+        oldUser.setLastname(userDTO.getLastname());
+        oldUser.setUsername(userDTO.getUsername());
+        oldUser.setPhotoUrl(userDTO.getPhotoUrl());
         return userRepository.save(oldUser);
     }
 

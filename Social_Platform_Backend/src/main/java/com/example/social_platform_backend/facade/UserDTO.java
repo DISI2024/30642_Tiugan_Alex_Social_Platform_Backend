@@ -16,6 +16,8 @@ public class UserDTO {
 
     private String role;
 
+    private String photoUrl;
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -38,5 +40,9 @@ public class UserDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }
