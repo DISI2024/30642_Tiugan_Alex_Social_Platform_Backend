@@ -42,7 +42,7 @@ public class PostController {
         return ResponseEntity.ok(userPosts);
     }
 
-    @PutMapping("/update")
+    @PutMapping()
     public ResponseEntity<Post> updatePost(@RequestBody PostUpdateDTO updateDTO) {
         Post updatedPost = postService.updatePost(updateDTO);
         return ResponseEntity.ok(updatedPost);
