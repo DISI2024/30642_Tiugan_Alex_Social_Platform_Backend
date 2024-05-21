@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -72,5 +73,16 @@ public class UserService {
 
     public void deleteUser(Long id){
         userRepository.deleteById(id);
+    }
+
+    public List<User> getSuggestedFriends(String username) {
+        User currentUser = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        Set<User> friends = currentUser.getFriends();
+        List<User> allUsers = userRepository.findAll();
+
+        return allUsers.stream()
+                .filter(user -> !user.equals(currentUser) && !friends.contains(user))
+                .limit(3)
+                .collect(Collectors.toList());
     }
 }
