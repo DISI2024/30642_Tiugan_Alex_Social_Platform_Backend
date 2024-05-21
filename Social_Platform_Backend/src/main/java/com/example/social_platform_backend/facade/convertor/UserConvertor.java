@@ -7,7 +7,7 @@ import com.example.social_platform_backend.facade.UserDTO;
 
 public class UserConvertor {
 
-    public RegisterDto toRegisterDTO(User user){
+    public RegisterDto toRegisterDTO(User user) {
         RegisterDto registerDto = new RegisterDto(
                 user.getUsername(),
                 user.getPassword(),
@@ -39,5 +39,19 @@ public class UserConvertor {
         userDTO.setRole(user.getRole());
 
         return userDTO;
+    }
+
+    public static User toUser(UserDTO userDTO) {
+        User user = new User(
+                userDTO.getUsername(),
+                userDTO.getPassword(),
+                userDTO.getFirstname(),
+                userDTO.getLastname(),
+                userDTO.getEmail(),
+                userDTO.getRole(),
+                userDTO.getPhotoUrl()
+        );
+
+        return user;
     }
 }

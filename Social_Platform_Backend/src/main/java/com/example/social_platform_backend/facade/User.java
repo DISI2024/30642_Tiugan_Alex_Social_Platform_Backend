@@ -40,6 +40,8 @@ public class User implements UserDetails {
     @Column(name="role", unique = true, nullable = false)
     private String role;
 
+    private String photoUrl;
+
     @Getter
     @ManyToMany
     @JoinTable(
@@ -61,6 +63,16 @@ public class User implements UserDetails {
         this.lastname = lastname;
         this.email = email;
         this.role = role;
+    }
+
+    public User(String username, String password, String firstname, String lastname, String email, String role, String photoUrl) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.role = role;
+        this.photoUrl = photoUrl;
     }
 
     public String getRole() {
@@ -105,6 +117,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     @Override

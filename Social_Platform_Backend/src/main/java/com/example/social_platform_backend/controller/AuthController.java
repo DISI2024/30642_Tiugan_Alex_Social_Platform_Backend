@@ -6,6 +6,8 @@ import com.example.social_platform_backend.facade.LoginDto;
 import com.example.social_platform_backend.facade.RegisterDto;
 import com.example.social_platform_backend.facade.ResetPasswordDTO;
 import com.example.social_platform_backend.facade.User;
+import com.example.social_platform_backend.facade.UserDTO;
+import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.service.AuthenticationService;
 import com.example.social_platform_backend.service.EmailService;
 import com.example.social_platform_backend.service.ResetPasswordService;
@@ -17,7 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,6 +38,7 @@ public class AuthController {
     private final ResetPasswordService resetPasswordService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     public AuthController(UserService userService, AuthenticationService authenticationService, EmailService emailService, PasswordEncoder passwordEncoder, ResetPasswordService resetPasswordService) {
         this.userService = userService;
@@ -44,8 +52,7 @@ public class AuthController {
     public ResponseEntity<Object> login(@RequestBody LoginDto loginDto) {
         try {
             return ResponseEntity.ok(authenticationService.login(loginDto));
-        }
-        catch (LoginException e){
+        } catch (LoginException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
@@ -54,8 +61,7 @@ public class AuthController {
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterDto registerDto) {
         try {
             return ResponseEntity.ok(authenticationService.register(registerDto));
-        }
-        catch(RegisterException e) {
+        } catch (RegisterException e) {
             //have to change what I send to the front end in the case of 500 server error
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -67,14 +73,13 @@ public class AuthController {
             logger.info("Reseting password...");
             User user = userService.getUserByEmail(email);
 
-            if(user == null)
+            if (user == null)
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
 
             emailService.sendResetPasswordEmail(user, user.getEmail());
 
             return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"Email sent succesfully\"}");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error sending reset password email: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
@@ -88,23 +93,18 @@ public class AuthController {
             User user = userService.getUserByEmail(resetPasswordDTO.getEmail());
             user.setPassword(passwordEncoder.encode(resetPasswordDTO.getNewPassword()));
 
-            userService.putUser(user);
+            UserDTO userDTO = UserConvertor.toUserDTO(user);
+            userService.putUser(userDTO);
             resetPasswordService.deleteResetPasswordByUsername(user.getUsername());
 
             return ResponseEntity.status(HttpStatus.OK).body("Password updated successfully");
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             logger.error("Error updating password: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
     }
-
-
-
-
-
 
 
 }
