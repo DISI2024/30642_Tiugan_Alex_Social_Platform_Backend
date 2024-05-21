@@ -33,10 +33,10 @@ public class PostService {
     }
 
     public Post addPost(PostCreateDTO postCreateDTO) {
-        User user = userRepository.findById(postCreateDTO.getUserID()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findUserByUsername(postCreateDTO.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
 
         Post post = new Post();
-        post.setPhotoURL(postCreateDTO.getPhotoURL());
+        post.setPhotoUrl(postCreateDTO.getPhotoUrl());
         post.setDescription(postCreateDTO.getDescription());
         post.setBlocked(false);
         post.setCreatedAt(LocalDateTime.now());
@@ -44,18 +44,22 @@ public class PostService {
 
         return postRepository.save(post);
     }
-    public List<Post> getPostsByUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public List<Post> getPostsByUser(String username) {
+        User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         List<Post> usersPosts = postRepository.findByUser(user);
         return usersPosts.stream()
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
                 .collect(Collectors.toList());
     }
 
+    public Post getPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
     public Post updatePost(PostUpdateDTO updateDTO) {
         Post post = postRepository.findById(updateDTO.getId()).orElseThrow(() -> new RuntimeException("Post not found"));
 
-        post.setPhotoURL(updateDTO.getPhotoURL());
+        post.setPhotoUrl(updateDTO.getPhotoUrl());
         post.setDescription(updateDTO.getDescription());
         post.setBlocked(updateDTO.isBlocked());
 

@@ -18,7 +18,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String photoURL;
+    private String photoUrl;
     private String description;
     private boolean blocked;
     private LocalDateTime createdAt;

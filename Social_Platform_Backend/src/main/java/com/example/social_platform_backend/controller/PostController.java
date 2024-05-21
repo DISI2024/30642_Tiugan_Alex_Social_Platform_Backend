@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/post")
 @CrossOrigin("*")
 @AllArgsConstructor
 public class PostController {
@@ -25,15 +25,20 @@ public class PostController {
         return ResponseEntity.ok(feed);
     }
 
-    @PostMapping("/add")
+    @PostMapping()
     public ResponseEntity<Post> addPost(@RequestBody PostCreateDTO postCreateDTO) {
         Post newPost = postService.addPost(postCreateDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Post>> getPostsByUser(@PathVariable Long userId) {
-        List<Post> userPosts = postService.getPostsByUser(userId);
+    @GetMapping("/id/{postId}")
+    public ResponseEntity<Post> getPostsById(@PathVariable Long postId) {
+        return ResponseEntity.ok(postService.getPostById(postId));
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<Post>> getPostsByUser(@PathVariable String username) {
+        List<Post> userPosts = postService.getPostsByUser(username);
         return ResponseEntity.ok(userPosts);
     }
 
@@ -43,7 +48,7 @@ public class PostController {
         return ResponseEntity.ok(updatedPost);
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/id/{postId}")
     public ResponseEntity<String> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         return ResponseEntity.ok("Deleted successfully");
