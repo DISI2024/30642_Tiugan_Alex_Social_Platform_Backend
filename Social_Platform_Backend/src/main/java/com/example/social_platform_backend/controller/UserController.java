@@ -132,8 +132,8 @@ public class UserController {
     }
 
     @GetMapping("/user/suggested-friends/{username}")
-    public ResponseEntity<List<User>> getSuggestedFriends(@PathVariable String username) {
-        List<User> suggestedFriends = userService.getSuggestedFriends(username);
+    public ResponseEntity<?> getSuggestedFriends(@PathVariable String username) {
+        List<UserDTO> suggestedFriends = userService.getSuggestedFriends(username);
         return ResponseEntity.ok(suggestedFriends);
     }
 }
