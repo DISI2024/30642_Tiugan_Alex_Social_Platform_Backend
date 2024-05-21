@@ -80,7 +80,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public List<User> getSuggestedFriends(String username) {
+    public List<UserDTO> getSuggestedFriends(String username) {
         User currentUser = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         Set<User> friends = currentUser.getFriends();
         List<User> allUsers = userRepository.findAll();
@@ -88,6 +88,7 @@ public class UserService {
         return allUsers.stream()
                 .filter(user -> !user.equals(currentUser) && !friends.contains(user))
                 .limit(3)
+                .map(UserConvertor::toUserDTO)
                 .collect(Collectors.toList());
     }
 

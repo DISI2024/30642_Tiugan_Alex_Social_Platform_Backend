@@ -51,7 +51,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "friend_id")
     )
 
-    @JsonIgnore
+    @JsonManagedReference
     private Set<User> friends = new HashSet<>();
 
     public User() {
