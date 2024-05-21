@@ -5,9 +5,11 @@ import com.example.social_platform_backend.facade.UserDTO;
 import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,9 +18,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> getUsers(){
@@ -84,5 +89,28 @@ public class UserService {
                 .filter(user -> !user.equals(currentUser) && !friends.contains(user))
                 .limit(3)
                 .collect(Collectors.toList());
+    }
+
+    private Optional<User> getAdmin() {
+        Optional<User> user = userRepository.findUserWithAdminRole();
+        return user;
+    }
+
+    private void addAdmin() {
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setEmail("admin@socialplatformno-reply.com");
+        admin.setFirstname("admin");
+        admin.setLastname("admin");
+        admin.setPassword(passwordEncoder.encode("admin"));
+        admin.setRole("ADMIN");
+        userRepository.save(admin);
+    }
+
+    public void createAdmin() {
+        Optional<User> user = getAdmin();
+        if(user.isEmpty()){
+            addAdmin();
+        }
     }
 }
