@@ -23,14 +23,27 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostConvertor postConvertor;
 
-    public List<Post> getFeed(Long userId) {
-        User currentUser = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+    public List<PostDTO> getFeed(String username) {
+        User currentUser = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         Set<User> friends = currentUser.getFriends();
         List<Post> allPosts = postRepository.findAll();
 
         return allPosts.stream()
                 .filter(post -> friends.contains(post.getUser()) && !post.isBlocked())
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .map(post -> postConvertor.toPostDTO(post))
+                .collect(Collectors.toList());
+    }
+
+    public List<PostDTO> getFeed(Long userID) {
+        User currentUser = userRepository.findById(userID).orElseThrow(() -> new RuntimeException("User not found"));
+        Set<User> friends = currentUser.getFriends();
+        List<Post> allPosts = postRepository.findAll();
+
+        return allPosts.stream()
+                .filter(post -> friends.contains(post.getUser()) && !post.isBlocked())
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .map(post -> postConvertor.toPostDTO(post))
                 .collect(Collectors.toList());
     }
 
@@ -66,11 +79,13 @@ public class PostService {
 
         return postRepository.save(post);
     }
-    public List<Post> getPostsByUser(String username) {
+    public List<PostDTO> getPostsByUser(String username) {
         User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         List<Post> usersPosts = postRepository.findByUser(user);
         return usersPosts.stream()
+                .filter(post -> !post.isBlocked())
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .map(post -> postConvertor.toPostDTO(post))
                 .collect(Collectors.toList());
     }
 

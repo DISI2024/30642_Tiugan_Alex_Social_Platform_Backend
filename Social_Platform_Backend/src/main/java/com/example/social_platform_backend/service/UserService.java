@@ -87,6 +87,7 @@ public class UserService {
         }
 
         List<Post> posts = postRepository.findByUser(user);
+        System.out.println(posts);
         postRepository.deleteAll(posts);
 
         // Delete user
@@ -100,7 +101,7 @@ public class UserService {
         List<User> allUsers = userRepository.findAll();
 
         return allUsers.stream()
-                .filter(user -> !user.equals(currentUser) && !friends.contains(user))
+                .filter(user -> !user.equals(currentUser) && !friends.contains(user) && !user.getRole().equals("ADMIN"))
                 .limit(10)
                 .map(UserConvertor::toUserDTO)
                 .collect(Collectors.toList());
@@ -110,6 +111,7 @@ public class UserService {
         List<User> allUsers = userRepository.findAll();
 
         return allUsers.stream()
+                .filter(user -> !user.getRole().equals("ADMIN"))
                 .map(post -> userConvertor.toUserDTO(post))
                 .collect(Collectors.toList());
     }

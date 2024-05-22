@@ -20,9 +20,9 @@ public class PostController {
 
     private PostService postService;
 
-    @GetMapping("/feed/{userId}")
-    public ResponseEntity<List<Post>> getFeed(@PathVariable Long userId) {
-        List<Post> feed = postService.getFeed(userId);
+    @GetMapping("/feed/{username}")
+    public ResponseEntity<List<PostDTO>> getFeed(@PathVariable String username) {
+        List<PostDTO> feed = postService.getFeed(username);
         return ResponseEntity.ok(feed);
     }
 
@@ -38,23 +38,16 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newPost);
     }
 
-    @PostMapping("/block/{id}")
-    public ResponseEntity<?> blockPost(@PathVariable Long id) {
+    @PostMapping("/block/id/{id}")
+    public ResponseEntity<String> blockPost(@PathVariable Long id) {
         postService.blockPost(id);
         return ResponseEntity.ok("Post blocked successfully");
     }
 
-    @PostMapping("/unblock/{id}")
-    public ResponseEntity<?> unblockPost(@PathVariable Long id) {
+    @PostMapping("/unblock/id/{id}")
+    public ResponseEntity<String> unblockPost(@PathVariable Long id) {
         postService.unblockPost(id);
         return ResponseEntity.ok("Post unblocked successfully");
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<Post>> getPosts() {
-        List<Post> posts = postService.getPosts();
-        return ResponseEntity.ok(posts);
-
     }
 
     @GetMapping("/id/{postId}")
@@ -63,8 +56,8 @@ public class PostController {
     }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<List<Post>> getPostsByUser(@PathVariable String username) {
-        List<Post> userPosts = postService.getPostsByUser(username);
+    public ResponseEntity<List<PostDTO>> getPostsByUser(@PathVariable String username) {
+        List<PostDTO> userPosts = postService.getPostsByUser(username);
         return ResponseEntity.ok(userPosts);
     }
 

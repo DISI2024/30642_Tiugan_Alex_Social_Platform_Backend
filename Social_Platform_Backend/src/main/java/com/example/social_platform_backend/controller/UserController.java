@@ -65,7 +65,7 @@ public class UserController {
         return userService.postUser(userDTO);
     }
 
-    @PostMapping("/user/{username}/add-friend/{friend}")
+    @PostMapping("/{username}/add-friend/{friend}")
     public ResponseEntity<?> sendFriendRequest(@PathVariable String username, @PathVariable String friend) {
         Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.addFriendshipRequest(username, friend);
 
@@ -78,7 +78,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/{username}/confirm-friend/{friend}")
+    @PostMapping("/{username}/confirm-friend/{friend}")
     public ResponseEntity<Object> confirmFriend(@PathVariable String username, @PathVariable String friend) {
         Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.confirmFriendshipRequest(username, friend);
 
@@ -90,7 +90,7 @@ public class UserController {
         return ResponseEntity.ok(friendshipRequest.get());
     }
 
-    @PostMapping("/user/{username}/reject-friend/{friend}")
+    @PostMapping("/{username}/reject-friend/{friend}")
     public ResponseEntity<Object> rejectFriend(@PathVariable String username, @PathVariable String friend) {
         Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.rejectFriendshipRequest(username, friend);
 
@@ -102,7 +102,7 @@ public class UserController {
         return ResponseEntity.ok(friendshipRequest.get());
     }
 
-    @GetMapping("/user/{username}/friend-requests")
+    @GetMapping("/{username}/friend-requests")
     public ResponseEntity<Object> getFriendRequests(@PathVariable String username) {
         List<FriendshipRequestDTO> friendshipRequests = friendshipRequestService.findAllPendingByReceiverUsername(username);
         return ResponseEntity.ok(friendshipRequests);

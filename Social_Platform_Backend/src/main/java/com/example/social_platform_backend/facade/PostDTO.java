@@ -12,5 +12,6 @@ public class PostDTO {
     private String photoUrl;
     private String description;
 
+    private boolean blocked;
     private String username;
 }
