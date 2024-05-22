@@ -87,7 +87,7 @@ public class UserService {
 
         return allUsers.stream()
                 .filter(user -> !user.equals(currentUser) && !friends.contains(user))
-                .limit(3)
+                .limit(10)
                 .map(UserConvertor::toUserDTO)
                 .collect(Collectors.toList());
     }

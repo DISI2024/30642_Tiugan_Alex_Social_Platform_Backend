@@ -43,7 +43,7 @@ public class UserController {
         this.friendshipRequestService = friendshipRequestService;
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/all")
     public List<User> getUsers() {
         return userService.getUsers();
     }
