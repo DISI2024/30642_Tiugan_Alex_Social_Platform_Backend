@@ -4,6 +4,7 @@ import com.example.social_platform_backend.facade.User;
 import com.example.social_platform_backend.facade.UserDTO;
 import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -76,8 +77,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(Long id){
-        userRepository.deleteById(id);
+    @Transactional
+    public void deleteUser(String username){
+        userRepository.deleteByUsername(username);
     }
 
     public List<UserDTO> getSuggestedFriends(String username) {

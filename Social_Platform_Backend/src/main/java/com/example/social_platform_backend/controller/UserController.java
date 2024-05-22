@@ -84,9 +84,9 @@ public class UserController {
         return userService.putUser(userDTO);
     }
 
-    @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/user/{username}")
+    public void deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
     }
 
     @DeleteMapping("/user/{username}/add-friend/{friend}")
