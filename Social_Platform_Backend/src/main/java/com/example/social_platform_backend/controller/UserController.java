@@ -69,6 +69,7 @@ public class UserController {
         Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.addFriendshipRequest(username, friend);
 
         if (friendshipRequest.isEmpty()) {
+            logger.error("Error sending friend request!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending friend request!");
         }
 
@@ -81,6 +82,7 @@ public class UserController {
         Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.confirmFriendshipRequest(username, friend);
 
         if (friendshipRequest.isEmpty()) {
+            logger.error("Error confirming friend request!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error confirming friend request!");
         }
 
@@ -92,6 +94,7 @@ public class UserController {
         Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.rejectFriendshipRequest(username, friend);
 
         if (friendshipRequest.isEmpty()) {
+            logger.error("Error rejecting friend request!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error rejecting friend request!");
         }
 
