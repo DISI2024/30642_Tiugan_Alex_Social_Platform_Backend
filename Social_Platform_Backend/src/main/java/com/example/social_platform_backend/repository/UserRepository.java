@@ -18,5 +18,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     )
     Optional<User> findUserWithAdminRole();
 
+    Optional<User> findByUsername(String senderUsername);
+
     void deleteByUsername(String username);
 }
