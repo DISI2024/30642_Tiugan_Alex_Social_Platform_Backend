@@ -8,6 +8,8 @@ import com.example.social_platform_backend.facade.convertor.UserConvertor;
 import com.example.social_platform_backend.repository.PostRepository;
 import com.example.social_platform_backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,6 +76,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional
     public void deleteUser(String username){
         User user = userRepository.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -88,6 +91,7 @@ public class UserService {
 
         // Delete user
         userRepository.delete(user);
+
     }
 
     public List<UserDTO> getSuggestedFriends(String username) {

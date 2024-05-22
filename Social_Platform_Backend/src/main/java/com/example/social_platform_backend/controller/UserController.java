@@ -1,9 +1,11 @@
 package com.example.social_platform_backend.controller;
 
-import com.example.social_platform_backend.facade.PostDTO;
+import com.example.social_platform_backend.facade.FriendshipRequestDTO;
+
 import com.example.social_platform_backend.facade.User;
 import com.example.social_platform_backend.facade.UserDTO;
 import com.example.social_platform_backend.facade.convertor.UserConvertor;
+import com.example.social_platform_backend.service.FriendshipRequestService;
 import com.example.social_platform_backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,11 +33,15 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    private final FriendshipRequestService friendshipRequestService;
+
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, FriendshipRequestService friendshipRequestService) {
         this.userService = userService;
+        this.friendshipRequestService = friendshipRequestService;
     }
 
     @GetMapping("/all")
@@ -58,27 +65,47 @@ public class UserController {
         return userService.postUser(userDTO);
     }
 
-    @PostMapping("/{username}/add-friend/{friend}")
-    public ResponseEntity<Object> addFriend(@PathVariable String username, @PathVariable String friend) {
-        try {
-            User user = userService.getUserByUsername(username);
-            User friendEntity = userService.getUserByUsername(friend);
+    @PostMapping("/user/{username}/add-friend/{friend}")
+    public ResponseEntity<?> sendFriendRequest(@PathVariable String username, @PathVariable String friend) {
+        Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.addFriendshipRequest(username, friend);
 
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-            }
-
-            if (friend == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friend not found");
-            }
-
-            userService.addFriend(user, friendEntity);
-
-            return ResponseEntity.status(HttpStatus.OK).body("Friend added succesfully");
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
+        if (friendshipRequest.isEmpty()) {
+            logger.error("Error sending friend request!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending friend request!");
         }
+
+        return ResponseEntity.ok(friendshipRequest.get());
+    }
+
+
+    @PostMapping("/user/{username}/confirm-friend/{friend}")
+    public ResponseEntity<Object> confirmFriend(@PathVariable String username, @PathVariable String friend) {
+        Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.confirmFriendshipRequest(username, friend);
+
+        if (friendshipRequest.isEmpty()) {
+            logger.error("Error confirming friend request!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error confirming friend request!");
+        }
+
+        return ResponseEntity.ok(friendshipRequest.get());
+    }
+
+    @PostMapping("/user/{username}/reject-friend/{friend}")
+    public ResponseEntity<Object> rejectFriend(@PathVariable String username, @PathVariable String friend) {
+        Optional<FriendshipRequestDTO> friendshipRequest = friendshipRequestService.rejectFriendshipRequest(username, friend);
+
+        if (friendshipRequest.isEmpty()) {
+            logger.error("Error rejecting friend request!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error rejecting friend request!");
+        }
+
+        return ResponseEntity.ok(friendshipRequest.get());
+    }
+
+    @GetMapping("/user/{username}/friend-requests")
+    public ResponseEntity<Object> getFriendRequests(@PathVariable String username) {
+        List<FriendshipRequestDTO> friendshipRequests = friendshipRequestService.findAllPendingByReceiverUsername(username);
+        return ResponseEntity.ok(friendshipRequests);
     }
 
     @PutMapping("")
@@ -138,4 +165,5 @@ public class UserController {
         List<UserDTO> suggestedFriends = userService.getSuggestedFriends(username);
         return ResponseEntity.ok(suggestedFriends);
     }
+
 }
